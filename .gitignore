@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+plaid-finance-frontend/node_modules
