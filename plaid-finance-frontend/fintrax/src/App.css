@@ -1,0 +1,127 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+  color: #333;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+  background-color: #333; /* Dark background */
+  color: #f9f9f9; /* Light text */
+}
+
+.App-header {
+  background-color: #4caf50;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+.App-header.dark-mode {
+  background-color: #2e7d32; /* Darker green for dark mode */
+}
+
+main {
+  padding: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background-color: #fff;
+  color: #333;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+table.dark-mode {
+  background-color: #444; /* Dark background for table */
+  color: #f9f9f9; /* Light text for table */
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+table th {
+  background-color: #4caf50;
+  color: white;
+}
+
+table.dark-mode th {
+  background-color: #2e7d32; /* Darker green for table headers */
+}
+
+form {
+  margin-top: 2rem;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+form.dark-mode {
+  background-color: #444; /* Dark background for form */
+  color: #f9f9f9; /* Light text for form */
+}
+
+form input,
+form button {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  width: 100%;
+  max-width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+form input.dark-mode,
+form button.dark-mode {
+  background-color: #555; /* Darker input background */
+  color: #f9f9f9; /* Light text for inputs */
+  border: 1px solid #666; /* Darker border */
+}
+
+form button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #45a049;
+}
+
+form button.dark-mode:hover {
+  background-color: #3a6d3a; /* Darker hover for dark mode */
+}
+
+button.dark-mode-toggle {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button.dark-mode-toggle:hover {
+  background-color: #45a049;
+}
+
+button.dark-mode-toggle.dark-mode {
+  background-color: #2e7d32;
+}
+
+button.dark-mode-toggle.dark-mode:hover {
+  background-color: #1b5e20;
+}
