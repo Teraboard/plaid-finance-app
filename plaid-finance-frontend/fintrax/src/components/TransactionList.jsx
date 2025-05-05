@@ -16,7 +16,7 @@ function TransactionList({ transactions, darkMode }) {
         <tbody>
           {transactions.map((transaction) => (
             <tr key={transaction.id}>
-              <td>{transaction.description}</td>
+              <td>{transaction.name}</td>
               <td
                 className={
                   transaction.amount < 0 ? "negative-amount" : "positive-amount"

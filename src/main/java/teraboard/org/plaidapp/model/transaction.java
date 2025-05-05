@@ -13,7 +13,7 @@ public class transaction {
     private String name;
     private String date;
     private Double amount;
-    private String category;
+    private TransactionCategory category;
 
     // Getters
     public String getId() {
@@ -28,9 +28,10 @@ public class transaction {
     public Double getAmount() {
         return amount;
     }
-    public String getCategory() {
+    public TransactionCategory getCategory() {
         return category;
     }
+
 
     // Setters
     public void setId(String id) {
@@ -45,7 +46,7 @@ public class transaction {
     public void setAmount(Double amount) {
         this.amount = amount;
     }
-    public void setCategory(String category) {
+    public void setCategory(TransactionCategory category) {
         this.category = category;
     }
 }
