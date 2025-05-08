@@ -98,3 +98,77 @@
 .form-button.dark-mode:hover {
   background-color: #1b5e20;
 }
+
+/* New styles for error, loading, and success messages */
+.loading-indicator {
+  background-color: #e3f2fd;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+  color: #1565c0;
+  border-left: 4px solid #1565c0;
+}
+
+.error-display {
+  background-color: #ffebee;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  color: #c62828;
+  border-left: 4px solid #c62828;
+}
+
+.success-message {
+  background-color: #e8f5e9;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  color: #2e7d32;
+  border-left: 4px solid #2e7d32;
+}
+
+.no-transactions-message {
+  background-color: #fff8e1;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+  color: #ff8f00;
+  border-left: 4px solid #ff8f00;
+}
+
+/* Dark mode styles for messages */
+.dashboard-container.dark-mode .loading-indicator {
+  background-color: #0d47a1;
+  color: #e3f2fd;
+}
+
+.dashboard-container.dark-mode .error-display {
+  background-color: #b71c1c;
+  color: #ffebee;
+}
+
+.dashboard-container.dark-mode .success-message {
+  background-color: #1b5e20;
+  color: #e8f5e9;
+}
+
+.dashboard-container.dark-mode .no-transactions-message {
+  background-color: #e65100;
+  color: #fff8e1;
+}
+
+.debug-section {
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.dashboard-container.dark-mode .debug-section {
+  background-color: #424242;
+  color: #e0e0e0;
+}

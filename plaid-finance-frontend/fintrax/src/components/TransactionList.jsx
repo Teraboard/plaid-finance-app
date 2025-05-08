@@ -2,6 +2,11 @@ import React from "react";
 import "./TransactionList.css";
 
 function TransactionList({ transactions, darkMode }) {
+  // Format amount to always show 2 decimal places
+  const formatAmount = (amount) => {
+    return typeof amount === "number" ? amount.toFixed(2) : "0.00";
+  };
+
   return (
     <div className="transaction-list-container">
       <h3 className="transaction-list-title">Transactions</h3>
@@ -23,8 +28,8 @@ function TransactionList({ transactions, darkMode }) {
                 }
               >
                 {transaction.amount < 0
-                  ? `-$${Math.abs(transaction.amount)}`
-                  : `$${transaction.amount}`}
+                  ? `-$${formatAmount(Math.abs(transaction.amount))}`
+                  : `$${formatAmount(transaction.amount)}`}
               </td>
               <td>{transaction.date}</td>
             </tr>

@@ -7,20 +7,25 @@ function Dashboard({ darkMode, toggleDarkMode }) {
   const [transactions, setTransactions] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
+  // Load transactions when component mounts
   useEffect(() => {
     loadTransactions();
   }, []);
 
   const loadTransactions = async () => {
     setLoading(true);
+    setError(null);
     try {
       const data = await transactionService.getAllTransactions();
-      setTransactions(data);
-      setError(null);
+      if (Array.isArray(data)) {
+        setTransactions(data);
+      } else {
+        setError('Received invalid data format from server');
+      }
     } catch (error) {
-      console.error('Error loading transactions:', error);
-      setError('Failed to load transactions');
+      setError('Failed to load transactions: ' + error.message);
     } finally {
       setLoading(false);
     }
@@ -28,17 +33,32 @@ function Dashboard({ darkMode, toggleDarkMode }) {
 
   const addTransaction = async (transaction) => {
     setLoading(true);
+    setError(null);
+    setSuccessMessage("");
     try {
       await transactionService.addTransaction(transaction);
-      await loadTransactions(); // Reload all transactions from the backend
-      setError(null);
+      
+      // Show success message
+      setSuccessMessage("Transaction added successfully!");
+      
+      // Force reload all transactions
+      await loadTransactions();
     } catch (error) {
-      console.error('Error adding transaction:', error);
-      setError('Failed to add transaction');
+      setError('Failed to add transaction: ' + error.message);
     } finally {
       setLoading(false);
     }
   };
+
+  // Automatically clear success message after 3 seconds
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
 
   const CATEGORIES = [
     'GROCERIES',
@@ -64,7 +84,19 @@ function Dashboard({ darkMode, toggleDarkMode }) {
           {darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
         </button>
       </header>
-      <TransactionList transactions={transactions} darkMode={darkMode} />
+      
+      {loading && <div className="loading-indicator">Loading transactions...</div>}
+      {error && !loading && <div className="error-display">{error}</div>}
+      {successMessage && <div className="success-message">{successMessage}</div>}
+      
+      {transactions.length === 0 && !loading && !error ? (
+        <div className="no-transactions-message">
+          No transactions found. Add a transaction below to get started.
+        </div>
+      ) : (
+        <TransactionList transactions={transactions} darkMode={darkMode} />
+      )}
+
       <form
         className={`transaction-form ${darkMode ? "dark-mode" : ""}`}
         onSubmit={(e) => {
@@ -72,11 +104,10 @@ function Dashboard({ darkMode, toggleDarkMode }) {
           const formData = new FormData(e.target);
           const newTransaction = {
             description: formData.get("description"),
-            amount: parseFloat(formData.get("amount")),
+            amount: parseFloat(parseFloat(formData.get("amount")).toFixed(2)),
             date: formData.get("date"),
             category: formData.get("category")
           };
-          console.log('Submitting transaction:', newTransaction); // Debug log
           addTransaction(newTransaction);
           e.target.reset();
         }}
@@ -94,7 +125,9 @@ function Dashboard({ darkMode, toggleDarkMode }) {
           <input
             name="amount"
             type="number"
-            placeholder="Amount"
+            step="0.01"
+            min="0"
+            placeholder="Amount (e.g., 15.07)"
             required
             className={`form-input ${darkMode ? "dark-mode" : ""}`}
           />
@@ -128,7 +161,19 @@ function Dashboard({ darkMode, toggleDarkMode }) {
         >
           Add
         </button>
+        {error && <div className="error-message">{error}</div>}
       </form>
+      
+      {/* Refresh button */}
+      <div className="refresh-section" style={{ marginTop: '20px' }}>
+        <button 
+          onClick={() => loadTransactions()} 
+          className={`form-button ${darkMode ? "dark-mode" : ""}`}
+          style={{ marginBottom: '10px', maxWidth: '200px' }}
+        >
+          Refresh Transactions
+        </button>
+      </div>
     </div>
   );
 }

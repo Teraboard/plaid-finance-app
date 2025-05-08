@@ -3,9 +3,12 @@ package teraboard.org.plaidapp.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 @Document(collection = "transactions")
-public class transaction {
+public class Transaction {
 
 
     @Id
@@ -14,6 +17,25 @@ public class transaction {
     private String date;
     private Double amount;
     private TransactionCategory category;
+
+    // Default constructor needed for MongoDB
+    public Transaction() {
+    }
+    
+    // Constructor with all fields for easier creation and testing
+    @JsonCreator
+    public Transaction(
+        @JsonProperty("id") String id, 
+        @JsonProperty("name") String name, 
+        @JsonProperty("date") String date, 
+        @JsonProperty("amount") Double amount, 
+        @JsonProperty("category") TransactionCategory category) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.amount = amount;
+        this.category = category;
+    }
 
     // Getters
     public String getId() {
@@ -48,5 +70,16 @@ public class transaction {
     }
     public void setCategory(TransactionCategory category) {
         this.category = category;
+    }
+    
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", date='" + date + '\'' +
+                ", amount=" + amount +
+                ", category=" + category +
+                '}';
     }
 }
