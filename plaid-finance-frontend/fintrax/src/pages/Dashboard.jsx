@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TransactionList from "../components/TransactionList";
+import TransactionChart from "../components/TransactionChart";
 import { transactionService } from "../services/transactionService";
 import "./Dashboard.css";
 
@@ -89,90 +90,106 @@ function Dashboard({ darkMode, toggleDarkMode }) {
       {error && !loading && <div className="error-display">{error}</div>}
       {successMessage && <div className="success-message">{successMessage}</div>}
       
-      {transactions.length === 0 && !loading && !error ? (
-        <div className="no-transactions-message">
-          No transactions found. Add a transaction below to get started.
+      <div className="main-layout-container">
+        {/* Left Column - Chart */}
+        <div className="left-column">
+          {transactions.length > 0 && !loading && !error && (
+            <TransactionChart transactions={transactions} darkMode={darkMode} />
+          )}
         </div>
-      ) : (
-        <TransactionList transactions={transactions} darkMode={darkMode} />
-      )}
-
-      <form
-        className={`transaction-form ${darkMode ? "dark-mode" : ""}`}
-        onSubmit={(e) => {
-          e.preventDefault();
-          const formData = new FormData(e.target);
-          const newTransaction = {
-            description: formData.get("description"),
-            amount: parseFloat(parseFloat(formData.get("amount")).toFixed(2)),
-            date: formData.get("date"),
-            category: formData.get("category")
-          };
-          addTransaction(newTransaction);
-          e.target.reset();
-        }}
-      >
-        <h3 className="form-title">Add Transaction</h3>
-        <div className="form-group">
-          <input
-            name="description"
-            placeholder="Description"
-            required
-            className={`form-input ${darkMode ? "dark-mode" : ""}`}
-          />
+        
+        {/* Center Column - Transactions List */}
+        <div className="center-column">
+          <div className="dashboard-content">
+            {/* Transaction List Section */}
+            {transactions.length === 0 && !loading && !error ? (
+              <div className="no-transactions-message">
+                No transactions found. Add a transaction using the form.
+              </div>
+            ) : (
+              <TransactionList transactions={transactions} darkMode={darkMode} />
+            )}
+          </div>
         </div>
-        <div className="form-group">
-          <input
-            name="amount"
-            type="number"
-            step="0.01"
-            min="0"
-            placeholder="Amount (e.g., 15.07)"
-            required
-            className={`form-input ${darkMode ? "dark-mode" : ""}`}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            name="date"
-            type="date"
-            required
-            className={`form-input ${darkMode ? "dark-mode" : ""}`}
-          />
-        </div>
-        <div className="form-group">
-          <select
-            name="category"
-            required
-            style={{ width: '330px' }}
-            className={`form-input ${darkMode ? "dark-mode" : ""}`}
+        
+        {/* Right Column - Add Transaction Form */}
+        <div className="right-column">
+          <form
+            className={`transaction-form ${darkMode ? "dark-mode" : ""}`}
+            onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.target);
+              const newTransaction = {
+                description: formData.get("description"),
+                amount: parseFloat(parseFloat(formData.get("amount")).toFixed(2)),
+                date: formData.get("date"),
+                category: formData.get("category")
+              };
+              addTransaction(newTransaction);
+              e.target.reset();
+            }}
           >
-            <option value="">Select Category</option>
-            {CATEGORIES.map(category => (
-              <option key={category} value={category}>
-                {category.charAt(0) + category.slice(1).toLowerCase()}
-              </option>
-            ))}
-          </select>
+            <h3 className="form-title">Add Transaction</h3>
+            <div className="form-group">
+              <input
+                name="description"
+                placeholder="Description"
+                required
+                className={`form-input ${darkMode ? "dark-mode" : ""}`}
+              />
+            </div>
+            <div className="form-group">
+              <input
+                name="amount"
+                type="number"
+                step="0.01"
+                min="0"
+                placeholder="Amount (e.g., 15.07)"
+                required
+                className={`form-input ${darkMode ? "dark-mode" : ""}`}
+              />
+            </div>
+            <div className="form-group">
+              <input
+                name="date"
+                type="date"
+                required
+                className={`form-input ${darkMode ? "dark-mode" : ""}`}
+              />
+            </div>
+            <div className="form-group">
+              <select
+                name="category"
+                required
+                className={`form-input ${darkMode ? "dark-mode" : ""}`}
+              >
+                <option value="">Select Category</option>
+                {CATEGORIES.map(category => (
+                  <option key={category} value={category}>
+                    {category.charAt(0) + category.slice(1).toLowerCase()}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button
+              type="submit"
+              className={`form-button ${darkMode ? "dark-mode" : ""}`}
+            >
+              Add
+            </button>
+            {error && <div className="error-message">{error}</div>}
+          </form>
+          
+          {/* Refresh button */}
+          <div className="refresh-section">
+            <button 
+              onClick={() => loadTransactions()} 
+              className={`form-button ${darkMode ? "dark-mode" : ""}`}
+            >
+              Refresh
+            </button>
+          </div>
         </div>
-        <button
-          type="submit"
-          className={`form-button ${darkMode ? "dark-mode" : ""}`}
-        >
-          Add
-        </button>
-        {error && <div className="error-message">{error}</div>}
-      </form>
-      
-      {/* Refresh button */}
-      <div className="refresh-section" style={{ marginTop: '20px' }}>
-        <button 
-          onClick={() => loadTransactions()} 
-          className={`form-button ${darkMode ? "dark-mode" : ""}`}
-          style={{ marginBottom: '10px', maxWidth: '200px' }}
-        >
-          Refresh Transactions
-        </button>
       </div>
     </div>
   );
