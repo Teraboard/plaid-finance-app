@@ -1,30 +1,52 @@
+@import './styles/theme.css';
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: var(--font-family);
   margin: 0;
   padding: 0;
-  background-color: #f4f4f9;
-  color: #333;
-  transition: background-color 0.3s, color 0.3s;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  transition: background-color var(--transition-medium), color var(--transition-medium);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-body.dark-mode {
-  background-color: #333; /* Dark background */
-  color: #f9f9f9; /* Light text */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .App-header {
-  background-color: #4caf50;
-  color: white;
-  padding: 1rem;
-  text-align: center;
+  background-color: var(--color-foreground);
+  color: var(--color-text-primary);
+  padding: var(--spacing-sm) var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
 }
 
-.App-header.dark-mode {
-  background-color: #2e7d32; /* Darker green for dark mode */
+.App-header h1 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin: 0;
+  transition: all var(--transition-medium);
 }
 
 main {
-  padding: 1rem;
+  flex: 1;
+  padding: var(--spacing-xs);
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 table {

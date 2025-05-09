@@ -1,6 +1,6 @@
 /* filepath: /Users/wesleyaxline/Developer/plaid-finance-app/plaid-finance-frontend/fintrax/src/pages/Dashboard.css */
 .dashboard-container {
-  padding: var(--spacing-xs);
+  padding: var(--spacing-sm);
   background-color: var(--color-background);
   min-height: 100vh;
   color: var(--color-text-primary);
@@ -15,13 +15,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--spacing-xxs);
-  padding-bottom: var(--spacing-xxs);
+  margin-bottom: var(--spacing-xs);
+  padding-bottom: var(--spacing-xs);
   border-bottom: 1px solid var(--color-border);
 }
 
 .dashboard-title {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
   margin: 0;
   background: linear-gradient(90deg, var(--color-accent-primary), var(--color-accent-secondary));
@@ -31,13 +31,13 @@
 }
 
 .dark-mode-toggle {
-  padding: var(--spacing-xxs) var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-md);
   background-color: var(--color-accent-primary);
   color: white;
   border: none;
   border-radius: var(--border-radius-full);
   cursor: pointer;
-  font-size: calc(var(--font-size-xs) - 1px);
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   transition: all var(--transition-fast);
 }
@@ -51,14 +51,14 @@
 .summary-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--spacing-xxs);
-  margin-bottom: var(--spacing-xxs);
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
 }
 
 .summary-card {
   background-color: var(--color-foreground);
   border-radius: var(--border-radius-md);
-  padding: var(--spacing-xs);
+  padding: var(--spacing-sm);
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
@@ -100,8 +100,8 @@
 .view-toggle {
   display: flex;
   justify-content: center;
-  gap: var(--spacing-xxs);
-  margin-bottom: var(--spacing-xxs);
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
 }
 
 .view-toggle-button {
@@ -109,8 +109,8 @@
   border: 1px solid var(--color-border);
   color: var(--color-text-secondary);
   border-radius: var(--border-radius-full);
-  padding: var(--spacing-xxs) var(--spacing-xs);
-  font-size: calc(var(--font-size-xs) - 1px);
+  padding: var(--spacing-xs) var(--spacing-md);
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -174,9 +174,9 @@
 /* Main Layout Container */
 .main-layout-container {
   display: grid;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
   grid-template-columns: 1fr;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
 }
 
 @media (min-width: 992px) {
@@ -191,7 +191,7 @@
 .right-column {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xxs);
+  gap: var(--spacing-xs);
 }
 
 .transaction-form,
@@ -216,9 +216,9 @@
 /* Form Styling */
 .form-title,
 .section-title {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
   text-align: center;
   color: var(--color-text-primary);
 }
@@ -226,12 +226,12 @@
 .section-description {
   color: var(--color-text-secondary);
   text-align: center;
-  margin-bottom: var(--spacing-xs);
-  font-size: calc(var(--font-size-xs) - 1px);
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-xs);
 }
 
 .form-group {
-  margin-bottom: var(--spacing-xxs);
+  margin-bottom: var(--spacing-xs);
   width: 100%;
 }
 
@@ -241,7 +241,7 @@
   padding: var(--spacing-xs) var(--spacing-sm);
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-sm);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   color: var(--color-text-primary);
   background-color: var(--color-foreground);
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
@@ -258,10 +258,10 @@
   background-color: var(--color-accent-primary);
   color: white;
   border: none;
-  padding: var(--spacing-xs) var(--spacing-md);
+  padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--border-radius-sm);
   cursor: pointer;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   width: 100%;
   transition: all var(--transition-fast);

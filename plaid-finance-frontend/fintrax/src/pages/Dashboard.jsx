@@ -12,6 +12,7 @@ function Dashboard({ darkMode, toggleDarkMode }) {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [linkedAccounts, setLinkedAccounts] = useState([]);
+  const [viewSummary, setViewSummary] = useState(true);
 
   // Load transactions when component mounts
   useEffect(() => {
@@ -114,12 +115,12 @@ function Dashboard({ darkMode, toggleDarkMode }) {
     }
   };
 
-  // Automatically clear success message after 3 seconds
+  // Automatically clear success message after 1.5 seconds
   useEffect(() => {
     if (successMessage) {
       const timer = setTimeout(() => {
         setSuccessMessage("");
-      }, 3000);
+      }, 1500);
       return () => clearTimeout(timer);
     }
   }, [successMessage]);
@@ -139,19 +140,77 @@ function Dashboard({ darkMode, toggleDarkMode }) {
     'UNCATEGORIZED'
   ];
 
+  // Calculate summary data
+  const calculateSummary = () => {
+    if (!transactions.length) return { income: 0, expenses: 0, balance: 0 };
+    
+    return transactions.reduce((summary, transaction) => {
+      const amount = transaction.amount || 0;
+      if (amount > 0) {
+        summary.income += amount;
+      } else {
+        summary.expenses += Math.abs(amount);
+      }
+      summary.balance += amount;
+      return summary;
+    }, { income: 0, expenses: 0, balance: 0 });
+  };
+
+  const summary = calculateSummary();
   
   return (
-    <div className={`dashboard-container ${darkMode ? "dark-mode" : ""}`}>
+    <div className="dashboard-container">
       <header className="dashboard-header">
-        <h2 className="dashboard-title">Dashboard</h2>
+        <h2 className="dashboard-title">Financial Dashboard</h2>
         <button className="dark-mode-toggle" onClick={toggleDarkMode}>
-          {darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          {darkMode ? "Light Mode" : "Dark Mode"}
         </button>
       </header>
       
-      {loading && <div className="loading-indicator">Loading transactions...</div>}
+      {loading && (
+        <div className="loading-indicator">
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="loading-spinner">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" strokeDasharray="30 60" />
+          </svg>
+          Loading data...
+        </div>
+      )}
+      
       {error && !loading && <div className="error-display">{error}</div>}
       {successMessage && <div className="success-message">{successMessage}</div>}
+      
+      {/* Financial Summary Cards */}
+      <div className="summary-container">
+        <div className="summary-card">
+          <div className="summary-title">Income</div>
+          <div className="summary-amount positive">${summary.income.toFixed(2)}</div>
+        </div>
+        <div className="summary-card">
+          <div className="summary-title">Expenses</div>
+          <div className="summary-amount negative">${summary.expenses.toFixed(2)}</div>
+        </div>
+        <div className="summary-card">
+          <div className="summary-title">Balance</div>
+          <div className={`summary-amount ${summary.balance >= 0 ? 'positive' : 'negative'}`}>
+            ${Math.abs(summary.balance).toFixed(2)}
+          </div>
+        </div>
+      </div>
+      
+      <div className="view-toggle">
+        <button 
+          className={`view-toggle-button ${viewSummary ? 'active' : ''}`}
+          onClick={() => setViewSummary(true)}
+        >
+          Summary
+        </button>
+        <button 
+          className={`view-toggle-button ${!viewSummary ? 'active' : ''}`}
+          onClick={() => setViewSummary(false)}
+        >
+          Details
+        </button>
+      </div>
       
       <div className="main-layout-container">
         {/* Left Column - Chart */}
@@ -163,27 +222,24 @@ function Dashboard({ darkMode, toggleDarkMode }) {
         
         {/* Center Column - Transactions List */}
         <div className="center-column">
-          <div className="dashboard-content">
-            {/* Transaction List Section */}
-            {transactions.length === 0 && !loading && !error ? (
-              <div className="no-transactions-message">
-                No transactions found. Add a transaction using the form or connect your bank account.
-              </div>
-            ) : (
-              <TransactionList 
-                transactions={transactions} 
-                darkMode={darkMode} 
-                onDeleteTransaction={deleteTransaction}
-                onEditTransaction={editTransaction}
-              />
-            )}
-          </div>
+          {transactions.length === 0 && !loading && !error ? (
+            <div className="no-transactions-message">
+              No transactions found. Add a transaction using the form or connect your bank account.
+            </div>
+          ) : (
+            <TransactionList 
+              transactions={transactions} 
+              darkMode={darkMode} 
+              onDeleteTransaction={deleteTransaction}
+              onEditTransaction={editTransaction}
+            />
+          )}
         </div>
         
         {/* Right Column - Add Transaction Form */}
         <div className="right-column">
           <form
-            className={`transaction-form ${darkMode ? "dark-mode" : ""}`}
+            className="transaction-form"
             onSubmit={(e) => {
               e.preventDefault();
               const formData = new FormData(e.target);
@@ -201,9 +257,9 @@ function Dashboard({ darkMode, toggleDarkMode }) {
             <div className="form-group">
               <input
                 name="description"
-                placeholder="Description (e.g., Fortnite V-Bux Card)"
+                placeholder="Description"
                 required
-                className={`form-input ${darkMode ? "dark-mode" : ""}`}
+                className="form-input"
               />
             </div>
             <div className="form-group">
@@ -211,9 +267,9 @@ function Dashboard({ darkMode, toggleDarkMode }) {
                 name="amount"
                 type="number"
                 step="0.01"
-                placeholder="Amount (e.g., $19.00)"
+                placeholder="Amount"
                 required
-                className={`form-input ${darkMode ? "dark-mode" : ""}`}
+                className="form-input"
               />
             </div>
             <div className="form-group">
@@ -221,14 +277,14 @@ function Dashboard({ darkMode, toggleDarkMode }) {
                 name="date"
                 type="date"
                 required
-                className={`form-input ${darkMode ? "dark-mode" : ""}`}
+                className="form-input"
               />
             </div>
             <div className="form-group">
               <select
                 name="category"
                 required
-                className={`form-input category-select ${darkMode ? "dark-mode" : ""}`}
+                className="form-input category-select"
               >
                 <option value="">Expense Category</option>
                 {CATEGORIES.map(category => (
@@ -240,15 +296,14 @@ function Dashboard({ darkMode, toggleDarkMode }) {
             </div>
             <button
               type="submit"
-              className={`form-button ${darkMode ? "dark-mode" : ""}`}
+              className="form-button"
             >
-              Add
+              Add Transaction
             </button>
-            {error && <div className="error-message">{error}</div>}
           </form>
           
           {/* Connect Bank Account Section */}
-          <div className={`plaid-section ${darkMode ? "dark-mode" : ""}`}>
+          <div className="plaid-section">
             <h3 className="section-title">Connect Bank Account</h3>
             <p className="section-description">
               Automatically import your transactions by securely connecting your bank account.
@@ -263,9 +318,14 @@ function Dashboard({ darkMode, toggleDarkMode }) {
           <div className="refresh-section">
             <button 
               onClick={() => loadTransactions()} 
-              className={`form-button ${darkMode ? "dark-mode" : ""}`}
+              className="form-button"
             >
-              Refresh
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px' }}>
+                <path d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12Z" stroke="currentColor" strokeWidth="1.5" fill="none" />
+                <path d="M16 12L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                <path d="M13 9L16 12L13 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Refresh Data
             </button>
           </div>
         </div>

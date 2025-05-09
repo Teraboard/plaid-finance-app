@@ -1,44 +1,86 @@
 .plaid-link-container {
-  margin: 15px 0;
+  margin: var(--spacing-sm) 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 .plaid-link-button {
-  background-color: #2d6ae3; /* Plaid blue */
+  background-color: var(--color-accent-primary);
   color: white;
   border: none;
-  border-radius: 4px;
-  padding: 10px 15px;
-  font-size: 14px;
-  font-weight: bold;
+  border-radius: var(--border-radius-full);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all var(--transition-medium);
   width: 100%;
   max-width: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.plaid-link-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0)
+  );
+  opacity: 0;
+  transition: opacity var(--transition-medium);
 }
 
 .plaid-link-button:hover {
-  background-color: #1e5ac3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+}
+
+.plaid-link-button:hover::before {
+  opacity: 1;
 }
 
 .plaid-link-button:disabled {
-  background-color: #a0a0a0;
+  background-color: var(--color-text-secondary);
   cursor: not-allowed;
-}
-
-.plaid-link-button.dark-mode {
-  background-color: #3867d6;
-}
-
-.plaid-link-button.dark-mode:hover {
-  background-color: #2754b9;
+  transform: none;
+  box-shadow: none;
 }
 
 .plaid-link-error {
-  color: red;
-  margin-top: 8px;
-  font-size: 13px;
+  color: var(--color-error);
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-xs);
   text-align: center;
+  max-width: 280px;
+}
+
+.plaid-link-icon {
+  margin-right: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-spinner {
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

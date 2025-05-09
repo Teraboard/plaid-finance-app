@@ -12,7 +12,7 @@ function TransactionList({ transactions, darkMode, onDeleteTransaction, onEditTr
 
   // Format amount to always show 2 decimal places
   const formatAmount = (amount) => {
-    return typeof amount === "number" ? amount.toFixed(2) : "0.00";
+    return typeof amount === "number" ? Math.abs(amount).toFixed(2) : "0.00";
   };
 
   const startEdit = (transaction) => {
@@ -50,106 +50,120 @@ function TransactionList({ transactions, darkMode, onDeleteTransaction, onEditTr
     }
   };
 
+  if (transactions.length === 0) {
+    return (
+      <div className="transaction-list-container">
+        <h3 className="transaction-list-title">Transactions</h3>
+        <div className="no-transactions">No transactions to display</div>
+      </div>
+    );
+  }
+
   return (
     <div className="transaction-list-container">
       <h3 className="transaction-list-title">Transactions</h3>
-      <table className={`transaction-table ${darkMode ? "dark-mode" : ""}`}>
-        <thead>
-          <tr>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Date</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {transactions.map((transaction) => (
-            <tr key={transaction.id}>
-              {editingId === transaction.id ? (
-                // Edit mode
-                <>
-                  <td>
-                    <input
-                      type="text"
-                      name="name"
-                      value={editForm.name}
-                      onChange={handleChange}
-                      onKeyPress={(e) => handleKeyPress(e, transaction.id)}
-                      className={`edit-input ${darkMode ? "dark-mode" : ""}`}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      name="amount"
-                      value={editForm.amount}
-                      onChange={handleChange}
-                      onKeyPress={(e) => handleKeyPress(e, transaction.id)}
-                      step="0.01"
-                      className={`edit-input ${darkMode ? "dark-mode" : ""}`}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="date"
-                      name="date"
-                      value={editForm.date}
-                      onChange={handleChange}
-                      onKeyPress={(e) => handleKeyPress(e, transaction.id)}
-                      className={`edit-input ${darkMode ? "dark-mode" : ""}`}
-                    />
-                  </td>
-                  <td className="action-buttons">
-                    <button
-                      className={`save-button ${darkMode ? "dark-mode" : ""}`}
-                      onClick={() => handleEditSubmit(transaction.id)}
-                    >
-                      Save
-                    </button>
-                    <button
-                      className={`cancel-button ${darkMode ? "dark-mode" : ""}`}
-                      onClick={cancelEdit}
-                    >
-                      Cancel
-                    </button>
-                  </td>
-                </>
-              ) : (
-                // Display mode
-                <>
-                  <td>{transaction.name}</td>
-                  <td
-                    className={
-                      transaction.amount < 0 ? "negative-amount" : "positive-amount"
-                    }
-                  >
-                    {transaction.amount < 0
-                      ? `-$${formatAmount(Math.abs(transaction.amount))}`
-                      : `$${formatAmount(transaction.amount)}`}
-                  </td>
-                  <td>{transaction.date}</td>
-                  <td className="action-buttons">
-                    <button
-                      className={`edit-button ${darkMode ? "dark-mode" : ""}`}
-                      onClick={() => startEdit(transaction)}
-                      title="Edit transaction"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className={`delete-button ${darkMode ? "dark-mode" : ""}`}
-                      onClick={() => onDeleteTransaction(transaction.id)}
-                      title="Delete transaction"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </>
-              )}
+      <div className="transaction-table-container">
+        <table className="transaction-table">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {transactions.map((transaction) => (
+              <tr key={transaction.id}>
+                {editingId === transaction.id ? (
+                  // Edit mode
+                  <>
+                    <td>
+                      <input
+                        type="text"
+                        name="name"
+                        value={editForm.name}
+                        onChange={handleChange}
+                        onKeyPress={(e) => handleKeyPress(e, transaction.id)}
+                        className="edit-input"
+                        autoFocus
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        name="amount"
+                        value={editForm.amount}
+                        onChange={handleChange}
+                        onKeyPress={(e) => handleKeyPress(e, transaction.id)}
+                        step="0.01"
+                        className="edit-input"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="date"
+                        name="date"
+                        value={editForm.date}
+                        onChange={handleChange}
+                        onKeyPress={(e) => handleKeyPress(e, transaction.id)}
+                        className="edit-input"
+                      />
+                    </td>
+                    <td className="action-buttons">
+                      <button
+                        className="save-button"
+                        onClick={() => handleEditSubmit(transaction.id)}
+                        title="Save changes"
+                      >
+                        Save
+                      </button>
+                      <button
+                        className="cancel-button"
+                        onClick={cancelEdit}
+                        title="Cancel editing"
+                      >
+                        Cancel
+                      </button>
+                    </td>
+                  </>
+                ) : (
+                  // Display mode
+                  <>
+                    <td>{transaction.name}</td>
+                    <td
+                      className={
+                        transaction.amount < 0 ? "negative-amount" : "positive-amount"
+                      }
+                    >
+                      {transaction.amount < 0
+                        ? `-$${formatAmount(transaction.amount)}`
+                        : `$${formatAmount(transaction.amount)}`}
+                    </td>
+                    <td>{transaction.date}</td>
+                    <td className="action-buttons">
+                      <button
+                        className="edit-button"
+                        onClick={() => startEdit(transaction)}
+                        title="Edit transaction"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="delete-button"
+                        onClick={() => onDeleteTransaction(transaction.id)}
+                        title="Delete transaction"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

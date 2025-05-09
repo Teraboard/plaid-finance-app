@@ -1,43 +1,172 @@
 .transaction-list-container {
-    margin-top: 10px;
-  }
-  
-  .transaction-list-title {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .transaction-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 0.5rem;
-    background-color: #fff;
-    color: #333;
-    transition: background-color 0.3s, color 0.3s;
-    font-size: 13px;
-  }
-  
-  .transaction-table.dark-mode {
-    background-color: #444;
-    color: #f9f9f9;
-  }
-  
+  margin: 0;
+  padding: 0;
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-foreground);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction-list-title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  margin: var(--spacing-sm) 0 var(--spacing-xs);
+  text-align: center;
+  color: var(--color-text-primary);
+}
+
+.transaction-table-container {
+  padding: 0 var(--spacing-xxs) var(--spacing-xs);
+  overflow-x: auto;
+  flex: 1;
+}
+
+.transaction-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: transparent;
+  color: var(--color-text-primary);
+  transition: all var(--transition-medium);
+  font-size: var(--font-size-xs);
+}
+
+.transaction-table th,
+.transaction-table td {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.transaction-table th {
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  font-size: calc(var(--font-size-xs) - 1px);
+  letter-spacing: 0.5px;
+  padding-top: var(--spacing-xs);
+  padding-bottom: var(--spacing-xs);
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 1;
+}
+
+.transaction-table tr {
+  transition: background-color var(--transition-fast);
+}
+
+.transaction-table tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.negative-amount {
+  color: var(--color-error);
+  font-weight: var(--font-weight-medium);
+}
+
+.positive-amount {
+  color: var(--color-success);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Action buttons container */
+.action-buttons {
+  display: flex;
+  gap: var(--spacing-xs);
+  justify-content: flex-end;
+}
+
+/* Button styling */
+.action-button, 
+.edit-button, 
+.delete-button, 
+.save-button, 
+.cancel-button {
+  border: none;
+  border-radius: var(--border-radius-full);
+  padding: var(--spacing-xxs) var(--spacing-xs);
+  font-size: calc(var(--font-size-xs) - 1px);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button:hover,
+.edit-button:hover,
+.delete-button:hover,
+.save-button:hover,
+.cancel-button:hover {
+  transform: translateY(-1px);
+}
+
+.edit-button {
+  background-color: var(--color-accent-primary);
+  color: white;
+}
+
+.delete-button {
+  background-color: var(--color-error);
+  color: white;
+}
+
+.save-button {
+  background-color: var(--color-success);
+  color: white;
+}
+
+.cancel-button {
+  background-color: var(--color-text-secondary);
+  color: white;
+}
+
+/* Edit input styling */
+.edit-input {
+  width: 100%;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-xs);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-foreground);
+  color: var(--color-text-primary);
+}
+
+.edit-input:focus {
+  outline: none;
+  border-color: var(--color-accent-primary);
+  box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.2);
+}
+
+/* Empty state */
+.no-transactions {
+  padding: var(--spacing-xl);
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
   .transaction-table th,
   .transaction-table td {
-    border: 1px solid #ddd;
-    padding: 0.25rem 0.4rem;
-    text-align: left;
+    padding: var(--spacing-xs) var(--spacing-sm);
   }
   
-  .transaction-table th {
-    background-color: #4caf50;
-    color: white;
+  .action-button, 
+  .edit-button, 
+  .delete-button, 
+  .save-button, 
+  .cancel-button {
+    padding: 2px 6px;
+    font-size: 10px;
   }
-  
-  .transaction-table.dark-mode th {
-    background-color: #2e7d32;
-  }
+}
   
   .transaction-table tr:hover {
     background-color: #f1f1f1;
