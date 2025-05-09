@@ -17,7 +17,7 @@
 
 ## ✨ Overview
 
-**FinTrax** is a modern personal finance management application that helps users track expenses, monitor income, and understand their spending habits. Built with a sleek Apple-inspired UI, FinTrax integrates with the Plaid API to securely connect with users' bank accounts and automatically import transaction data.
+**FinTrax** is a modern personal finance management application that helps users track expenses, monitor income, and understand their spending habits. FinTrax integrates with the Plaid API to securely connect with users' bank accounts and automatically import transaction data.
 
 ## 🚀 Features
 
