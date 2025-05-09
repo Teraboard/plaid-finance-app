@@ -32,6 +32,13 @@ build/
 ### VS Code ###
 .vscode/
 
+### Environment files ###
+.env
+.env.*
+!.env.example
 
 plaid-finance-frontend/node_modules
+plaid-finance-frontend/**/.env
+plaid-finance-frontend/**/.env.*
+!plaid-finance-frontend/**/.env.example
 .DS_Store

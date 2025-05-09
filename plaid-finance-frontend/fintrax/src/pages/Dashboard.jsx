@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import TransactionList from "../components/TransactionList";
 import TransactionChart from "../components/TransactionChart";
+import PlaidLinkButton from "../components/PlaidLinkButton";
 import { transactionService } from "../services/transactionService";
+import { plaidService } from "../services/plaidService";
 import "./Dashboard.css";
 
 function Dashboard({ darkMode, toggleDarkMode }) {
@@ -9,6 +11,7 @@ function Dashboard({ darkMode, toggleDarkMode }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [linkedAccounts, setLinkedAccounts] = useState([]);
 
   // Load transactions when component mounts
   useEffect(() => {
@@ -46,6 +49,66 @@ function Dashboard({ darkMode, toggleDarkMode }) {
       await loadTransactions();
     } catch (error) {
       setError('Failed to add transaction: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteTransaction = async (id) => {
+    setLoading(true);
+    setError(null);
+    setSuccessMessage("");
+    try {
+      await transactionService.deleteTransaction(id);
+      
+      // Show success message
+      setSuccessMessage("Transaction deleted successfully!");
+      
+      // Force reload all transactions
+      await loadTransactions();
+    } catch (error) {
+      setError('Failed to delete transaction: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const editTransaction = async (id, updatedTransaction) => {
+    setLoading(true);
+    setError(null);
+    setSuccessMessage("");
+    try {
+      await transactionService.updateTransaction(id, updatedTransaction);
+      
+      // Show success message
+      setSuccessMessage("Transaction updated successfully!");
+      
+      // Force reload all transactions
+      await loadTransactions();
+    } catch (error) {
+      setError('Failed to update transaction: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePlaidSuccess = async (plaidItem) => {
+    setLoading(true);
+    setError(null);
+    try {
+      // Add the new linked account to the state
+      setLinkedAccounts((prevAccounts) => [...prevAccounts, plaidItem]);
+      
+      // Fetch transactions for the newly linked account
+      const newTransactions = await plaidService.getTransactions(plaidItem.plaidItemId);
+      
+      // Show success message
+      setSuccessMessage(`Successfully connected to ${plaidItem.institutionName} and imported ${newTransactions.length} transactions!`);
+      
+      // Reload all transactions
+      await loadTransactions();
+    } catch (error) {
+      setError('Failed to import transactions: ' + error.message);
     } finally {
       setLoading(false);
     }
@@ -104,10 +167,15 @@ function Dashboard({ darkMode, toggleDarkMode }) {
             {/* Transaction List Section */}
             {transactions.length === 0 && !loading && !error ? (
               <div className="no-transactions-message">
-                No transactions found. Add a transaction using the form.
+                No transactions found. Add a transaction using the form or connect your bank account.
               </div>
             ) : (
-              <TransactionList transactions={transactions} darkMode={darkMode} />
+              <TransactionList 
+                transactions={transactions} 
+                darkMode={darkMode} 
+                onDeleteTransaction={deleteTransaction}
+                onEditTransaction={editTransaction}
+              />
             )}
           </div>
         </div>
@@ -133,7 +201,7 @@ function Dashboard({ darkMode, toggleDarkMode }) {
             <div className="form-group">
               <input
                 name="description"
-                placeholder="Description"
+                placeholder="Description (e.g., Fortnite V-Bux Card)"
                 required
                 className={`form-input ${darkMode ? "dark-mode" : ""}`}
               />
@@ -143,8 +211,7 @@ function Dashboard({ darkMode, toggleDarkMode }) {
                 name="amount"
                 type="number"
                 step="0.01"
-                min="0"
-                placeholder="Amount (e.g., 15.07)"
+                placeholder="Amount (e.g., $19.00)"
                 required
                 className={`form-input ${darkMode ? "dark-mode" : ""}`}
               />
@@ -161,9 +228,9 @@ function Dashboard({ darkMode, toggleDarkMode }) {
               <select
                 name="category"
                 required
-                className={`form-input ${darkMode ? "dark-mode" : ""}`}
+                className={`form-input category-select ${darkMode ? "dark-mode" : ""}`}
               >
-                <option value="">Select Category</option>
+                <option value="">Expense Category</option>
                 {CATEGORIES.map(category => (
                   <option key={category} value={category}>
                     {category.charAt(0) + category.slice(1).toLowerCase()}
@@ -179,6 +246,18 @@ function Dashboard({ darkMode, toggleDarkMode }) {
             </button>
             {error && <div className="error-message">{error}</div>}
           </form>
+          
+          {/* Connect Bank Account Section */}
+          <div className={`plaid-section ${darkMode ? "dark-mode" : ""}`}>
+            <h3 className="section-title">Connect Bank Account</h3>
+            <p className="section-description">
+              Automatically import your transactions by securely connecting your bank account.
+            </p>
+            <PlaidLinkButton 
+              onSuccess={handlePlaidSuccess} 
+              darkMode={darkMode} 
+            />
+          </div>
           
           {/* Refresh button */}
           <div className="refresh-section">

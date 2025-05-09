@@ -54,3 +54,122 @@
   .positive-amount {
     color: green;
   }
+
+  /* Action buttons container */
+  .action-buttons {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+  }
+
+  /* Edit button styling */
+  .edit-button {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .edit-button:hover {
+    background-color: #0b7dda;
+  }
+  
+  .edit-button.dark-mode {
+    background-color: #1565c0;
+  }
+  
+  .edit-button.dark-mode:hover {
+    background-color: #0d47a1;
+  }
+
+  /* Style for delete button */
+  .delete-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .delete-button:hover {
+    background-color: #d32f2f;
+  }
+  
+  .delete-button.dark-mode {
+    background-color: #b71c1c;
+  }
+  
+  .delete-button.dark-mode:hover {
+    background-color: #7f0000;
+  }
+
+  /* Save button styling */
+  .save-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .save-button:hover {
+    background-color: #388e3c;
+  }
+  
+  .save-button.dark-mode {
+    background-color: #2e7d32;
+  }
+  
+  .save-button.dark-mode:hover {
+    background-color: #1b5e20;
+  }
+
+  /* Cancel button styling */
+  .cancel-button {
+    background-color: #9e9e9e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .cancel-button:hover {
+    background-color: #757575;
+  }
+  
+  .cancel-button.dark-mode {
+    background-color: #616161;
+  }
+  
+  .cancel-button.dark-mode:hover {
+    background-color: #424242;
+  }
+
+  /* Edit input styling */
+  .edit-input {
+    width: 100%;
+    padding: 4px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #fff;
+  }
+  
+  .edit-input.dark-mode {
+    background-color: #424242;
+    color: #f5f5f5;
+    border-color: #666;
+  }

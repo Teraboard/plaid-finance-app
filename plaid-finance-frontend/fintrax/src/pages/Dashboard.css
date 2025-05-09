@@ -78,6 +78,10 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 13px;
+  height: 34px;
+  box-sizing: border-box;
+  background-color: #fff;
+  color: #333;
 }
 
 .form-input.dark-mode {
@@ -263,4 +267,62 @@
 .dashboard-container.dark-mode .debug-section {
   background-color: #424242;
   color: #e0e0e0;
+}
+
+/* Specific styling for category select dropdown */
+.category-select {
+  height: 31px !important; /* Match the height of other inputs */
+  padding: 2px 8px !important;
+  font-size: 13px !important;
+  box-sizing: border-box !important;
+}
+
+.category-select option {
+  font-size: 13px;
+  padding: 2px;
+}
+
+.form-input, .category-select {
+  width: 300px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Plaid connection section styling */
+.plaid-section {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 15px auto;
+  transition: background-color 0.3s, color 0.3s;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.plaid-section.dark-mode {
+  background-color: #444;
+  color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-align: center;
+  width: 100%;
+}
+
+.section-description {
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 12px;
+  color: #666;
+}
+
+.plaid-section.dark-mode .section-description {
+  color: #bbb;
 }

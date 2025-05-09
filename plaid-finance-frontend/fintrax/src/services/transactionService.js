@@ -1,8 +1,10 @@
-const API_BASE_URL = 'http://localhost:8080/api';
+// Using environment variables for sensitive data
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
 
-// Load credentials from environment variables in a real application
-// NEVER hardcode credentials in frontend code
-const AUTH_CREDENTIALS = 'Basic ' + btoa('admin:palmtree14');
+// Construct auth credentials from environment variables
+const username = process.env.REACT_APP_AUTH_USERNAME || 'admin';
+const password = process.env.REACT_APP_AUTH_PASSWORD || 'palmtree14';
+const AUTH_CREDENTIALS = 'Basic ' + btoa(`${username}:${password}`);
 
 export const transactionService = {
   async getAllTransactions() {
@@ -68,6 +70,65 @@ export const transactionService = {
     }
     catch (error) {
       console.error('Error adding transaction:', error);
+      throw error;
+    }
+  },
+
+  async deleteTransaction(id) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/transactions/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': AUTH_CREDENTIALS,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Network response was not ok: ${response.status}`);
+      }
+      
+      return true;
+    }
+    catch (error) {
+      console.error('Error deleting transaction:', error);
+      throw error;
+    }
+  },
+
+  async updateTransaction(id, transaction) {
+    try {
+      // Ensure amount is formatted with 2 decimal places
+      const amount = parseFloat(parseFloat(transaction.amount).toFixed(2));
+      
+      // Map frontend fields to backend fields
+      const requestBody = {
+        name: transaction.name,
+        amount: amount,
+        date: transaction.date,
+        category: transaction.category
+      };
+      
+      const response = await fetch(`${API_BASE_URL}/transactions/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': AUTH_CREDENTIALS
+        },
+        body: JSON.stringify(requestBody)
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Network response was not ok: ${response.status}`);
+      }
+      
+      const updatedTransaction = await response.json();
+      return updatedTransaction;
+    }
+    catch (error) {
+      console.error('Error updating transaction:', error);
       throw error;
     }
   }
