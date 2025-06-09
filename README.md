@@ -97,10 +97,6 @@ plaid.environment=sandbox
 
 ## 📊 Application Architecture
 
-<div align="center">
-  <img src="https://miro.medium.com/max/1400/1*ESPjx4XjiYEB2VvRYVNmyA.png" alt="Architecture Diagram" width="600px" style="border-radius: 8px; margin: 20px 0;" />
-</div>
-
 The application follows a standard client-server architecture:
 
 1. **Frontend (React)** - Provides the user interface and communicates with the backend API
